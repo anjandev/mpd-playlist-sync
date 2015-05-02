@@ -7,12 +7,14 @@ def main(playlist, mus_fol, and_fol, name):
     and_fol = os.path.expanduser(and_fol)
     playlist = os.path.expanduser(playlist)
     songs = []
+    song_fs = []
 
     with open(playlist) as fin:
         songs = fin.readlines()
 
     play_dir = and_fol + '/' + name
-    os.mkdir(play_dir)
+    if not os.path.exists(play_dir):
+        os.mkdir(play_dir)
     os.chdir(play_dir)
 
     for song in songs:
@@ -24,6 +26,7 @@ def main(playlist, mus_fol, and_fol, name):
         song.replace("]","\]")
         """
         fold,song_f = song.split('/',1)
+        song_fs.append(song_f)
         if not os.path.isdir(fold):
             os.mkdir(fold)
 
@@ -32,7 +35,13 @@ def main(playlist, mus_fol, and_fol, name):
 
         print(song_f + " has been copied")
 
-    
+    print("deleting stuff")
+    for dirpath, dirnames, song_f in os.walk('./'): 
+        if len(song_f) == 1:
+            if not song_f in song_fs:
+                # notifiaction message here
+                os.remove(dirpath + '/' + song_f)
+
     
 
 
