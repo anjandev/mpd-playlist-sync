@@ -33,7 +33,7 @@ def main(playlist, mus_fol, and_fol, name):
         if not os.path.isdir(fold):
             os.mkdir(fold)
 
-        if not os.path.exists(song)
+        if not os.path.exists(song):
             shutil.copyfile(mus_fol + '/' + song,'./' + song)    
 
         print(song_f + " has been copied")
