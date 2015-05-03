@@ -1,8 +1,11 @@
+#!/usr/bin/python
+
 import sys
 import shutil
 import os
 
 def main(playlist, mus_fol, and_fol, name):
+
     mus_fol = os.path.expanduser(mus_fol)
     and_fol = os.path.expanduser(and_fol)
     playlist = os.path.expanduser(playlist)
@@ -42,8 +45,6 @@ def main(playlist, mus_fol, and_fol, name):
                 # notifiaction message here
                 os.remove(dirpath + '/' + song_f)
 
-    
-
 
 if __name__=="__main__":
     print("The playlist file is " + sys.argv[1])
@@ -51,4 +52,3 @@ if __name__=="__main__":
     print("The android root folder is " + sys.argv[3])
     print("The playlist name is " + sys.argv[4])
     main(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
-
