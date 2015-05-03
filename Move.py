@@ -4,7 +4,7 @@ import sys
 import shutil
 import os
 
-def main(playlist, mus_fol, and_fol):
+def main(playlist, mus_fol, and_fol, name):
 
     if mus_fol.endswith("/"):
         mus_fol[:-1]
@@ -14,14 +14,13 @@ def main(playlist, mus_fol, and_fol):
     mus_fol = os.path.expanduser(mus_fol)
     and_fol = os.path.expanduser(and_fol)
     playlist = os.path.expanduser(playlist)
-    name = str(playlist)
     songs = []
     song_fs = []
 
     with open(playlist) as fin:
         songs = fin.readlines()
 
-    play_dir = and_fol + '/' + name
+    play_dir = and_fol + '/' + name + '/'
     
     if not os.path.exists(play_dir):
         os.mkdir(play_dir)
@@ -33,7 +32,6 @@ def main(playlist, mus_fol, and_fol):
         if song.endswith("\n"):
             song[:-2]
 
-
         """
         song.replace(" ","\ ")
         song.replace("(","\(")
@@ -43,10 +41,9 @@ def main(playlist, mus_fol, and_fol):
         """
         
         artist,other = song.split('/',1)
-        album,song_fs= other.split('/',1)
+        album,song_fs= other.split('/',1) 
         
-        
-        and_loc_artist = and_fol + artist
+        and_loc_artist = play_dir + artist
         and_loc_album = and_loc_artist + '/' + album
         and_loc_song = and_loc_album + '/' + song_fs
  
@@ -61,8 +58,10 @@ def main(playlist, mus_fol, and_fol):
             print (mus_fol)
             songloc = mus_fol + "/" + artist + "/" + album + "/" + song_fs 
             shutil.copyfile(songloc[:-1], and_loc_song)    
-            print(songloc + " has been copied")
-    
+            print(song_fs + " has been copied")
+
+
+def del_not_in_playlist(): 
     print("deleting stuff")
 
     music_formats = [".mp3",".flac"]
@@ -80,4 +79,5 @@ if __name__=="__main__":
     print("The playlist file is " + sys.argv[1])
     print("The music root folder is " + sys.argv[2])
     print("The android root folder is " + sys.argv[3])
-    main(sys.argv[1],sys.argv[2],sys.argv[3])
+    print("Saving to folder " + sys.argv[4] + " on android device.")
+    main(sys.argv[1],sys.argv[2],sys.argv[3], sys.argv[4])
