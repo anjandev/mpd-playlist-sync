@@ -55,10 +55,9 @@ def main(playlist, mus_fol, and_fol, name):
             os.mkdir(and_loc_album)
 
         if not os.path.exists(and_loc_song):
-            print (mus_fol)
             songloc = mus_fol + "/" + artist + "/" + album + "/" + song_fs 
             shutil.copyfile(songloc[:-1], and_loc_song)    
-            print(song_fs + " has been copied")
+            print(song_fs + " By " + artist + " has been copied")
 
 
 def del_not_in_playlist(): 
