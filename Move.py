@@ -4,7 +4,27 @@ import sys
 import shutil
 import os
 
-def main(playlist, mus_fol, and_fol, name):
+def main(playlist, mus_fol, devicename, name):
+
+    if not os.path.exists(~/config/mpdsync):
+        os.mkdir(~/.mpdsync)
+
+    if not os.path.exists(~/.config/mpdsync + devicename):
+        devicename = input("New Device? Please name this device. If not new device type no to see previously configured devices.")
+
+        if devicename == no:
+            os.chdir(~/.config/mpdsync)
+            print [name for name in os.listdir(".") if os.path.isdir(name)]    
+            devicename = input("Enter a device name ")
+            and_fol = ~/.config/mpdsync/ + devicename
+        else:
+            linktodevice = input("Where is this device? (Entire mount path ")
+            os.symlink(linktodevice, ~/.config/mpdsync/ + devicename)
+            and_fol = ~/.config/mpdsync/ + devicename 
+    
+    else:
+        and_fol = ~/.config/mpdsync/ + devicename 
+    
 
     if mus_fol.endswith("/"):
         mus_fol[:-1]
