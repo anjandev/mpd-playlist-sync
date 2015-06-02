@@ -4,15 +4,15 @@ import sys
 import shutil
 import os
 
-def main(playlist, mus_fol, devicename, and_fol_name):
-    
-    playlist = "~/.mpd/playlists/" + playlist + ".m3u"
-    
+def main(playlist, mus_fol, and_fol, name):
+
     if mus_fol.endswith("/"):
         mus_fol[:-1]
+    if and_fol.endswith("/"):
+        and_fol[:-1]
 
     mus_fol = os.path.expanduser(mus_fol)
-    and_fol = os.path.expanduser(devicename + '/' + and_fol_name)
+    and_fol = os.path.expanduser(and_fol)
     playlist = os.path.expanduser(playlist)
     songs = []
     song_fs = []
@@ -20,9 +20,11 @@ def main(playlist, mus_fol, devicename, and_fol_name):
     with open(playlist) as fin:
         songs = fin.readlines()
 
-    if not os.path.exists(and_fol):
-        os.mkdir(and_fol)
-    os.chdir(and_fol)
+    play_dir = and_fol + '/' + name + '/'
+    
+    if not os.path.exists(play_dir):
+        os.mkdir(play_dir)
+    os.chdir(play_dir)
 
     for song in songs:
         
@@ -41,7 +43,7 @@ def main(playlist, mus_fol, devicename, and_fol_name):
         artist,other = song.split('/',1)
         album,song_fs= other.split('/',1) 
         
-        and_loc_artist = and_fol + '/' + artist
+        and_loc_artist = play_dir + artist
         and_loc_album = and_loc_artist + '/' + album
         and_loc_song = and_loc_album + '/' + song_fs
  
@@ -54,28 +56,9 @@ def main(playlist, mus_fol, devicename, and_fol_name):
 
         if not os.path.exists(and_loc_song):
             songloc = mus_fol + "/" + artist + "/" + album + "/" + song_fs 
-            shutil.copy2(songloc[:-1], and_loc_song)    
+            shutil.copyfile(songloc[:-1], and_loc_song)    
             print(song_fs + " By " + artist + " has been copied")
 
-
-def device_manager():
-    if not os.path.exists("~/.config/mpdsync"):
-        os.mkdir("~/.mpdsync")
-
-    if not os.path.exists("~/.mpdsync" + devicename):
-        devicename = input("New Device? Please name this device. If not new device type no to see previously configured devices.")
-
-        if devicename == no:
-            os.chdir("~/.mpdsync")
-            devicename = input("Enter a device name ")
-            and_fol = "~/.mpdsync/" + devicename
-        else:
-            linktodevice = input("Where is this device? (Entire mount path ")
-            os.symlink(linktodevice, "~/.mpdsync/" + devicename)
-            and_fol = "~/.mpdsync/" + devicename 
-    
-    else:
-        and_fol = "~/.mpdsync/" + devicename 
 
 def del_not_in_playlist(): 
     print("deleting stuff")
